@@ -45,9 +45,20 @@ fun main(args: Array<String>) {
                                         println("   Property: " + property.name)
                                     }
                                 }
+                                is KtPrimaryConstructor -> {
+                                    child.children.forEach { fields ->
+                                        when (fields) {
+                                            is KtParameterList -> {
+                                                fields.parameters.forEach {
+                                                    println("   Parameter name: " + it.name) }
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
+
                     is KtNamedFunction -> println("FunctionName: " + psiElement.name)
                     is KtPackageDirective -> println("PackageName: " + psiElement.fqName)
                 }
