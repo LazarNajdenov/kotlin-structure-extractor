@@ -5,6 +5,8 @@ import org.jetbrains.kotlin.com.intellij.psi.PsiFileFactory
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.idea.KotlinFileType
 import org.jetbrains.kotlin.psi.*
+import org.jetbrains.kotlin.psi.psiUtil.parents
+import org.jetbrains.kotlin.resolve.calls.callUtil.getCalleeExpressionIfAny
 import java.io.File
 import java.nio.charset.Charset
 import java.nio.file.Files
@@ -35,8 +37,15 @@ fun main(args: Array<String>) {
                 when (psiElement) {
                     is KtClass -> {
                         println("ClassName: " + psiElement.name)
+                        val superEntries = psiElement.superTypeListEntries
+                        superEntries.forEach { parent ->
+                            when (parent) {
+                                is KtSuperTypeCallEntry -> println("   Extends: " + parent.typeReference?.text)
+                                else -> println("   Implements: " + parent.typeReference?.text)
+                            }
+                        }
                         psiElement.children.forEach { child ->
-                            when(child) {
+                            when (child) {
                                 is KtClassBody -> {
                                     child.functions.forEach { function ->
                                         println("   Function: " + function.name)
@@ -58,7 +67,6 @@ fun main(args: Array<String>) {
                             }
                         }
                     }
-
                     is KtNamedFunction -> println("FunctionName: " + psiElement.name)
                     is KtPackageDirective -> println("PackageName: " + psiElement.fqName)
                 }

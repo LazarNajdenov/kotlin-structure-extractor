@@ -1,5 +1,10 @@
 package ch.usi.si.msde.edsl.assignment_05_template.model
 
+
+interface MyInterface {
+    fun bar()
+    fun foo()
+}
 /**
  * A name for events, commands, and states.
  *
@@ -25,7 +30,7 @@ abstract class AbstractEvent(name: Name? = null): NamedEntity(name)
  *
  * @param name The name of the command.
  */
-class Command(name: Name? = null): AbstractEvent(name) {
+class Command(name: Name? = null): AbstractEvent(name), MyInterface {
     override fun toString() = "c(${name?.value})"
 }
 
