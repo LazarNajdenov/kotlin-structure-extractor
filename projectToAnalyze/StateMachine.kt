@@ -17,7 +17,6 @@ data class Name(val value: String)
  * A language entity that has a name.
  */
 abstract class NamedEntity(var name: Name? = null) {
-    val aName: String = "test"
     fun name(nameString: String) {
         this.name = Name(nameString)
     }
@@ -153,6 +152,10 @@ class Counter(name: Name? = null, var initialValue: Int = 0): NamedEntity(name) 
         set(value) {
             field = value
         }
+
+    constructor(anotherValue: Int) {
+        value = value + anotherValue
+    }
 
     fun initialValue(value: Int) {
         initialValue = value

@@ -2,6 +2,16 @@ package ch.usi.si.msde.edsl.assignment_05_template.dsl
 
 import ch.usi.si.msde.edsl.assignment_05_template.model.StateMachine
 
+object ObjectExample {
+    fun hello(): String {
+        return "hello"
+    }
+
+    override fun toString(): String {
+        return "Hello, it's me, ${ObjectExample::class.simpleName}"
+    }
+}
+
 fun stateMachine(init: StateMachine.() -> Unit): StateMachine {
     val stateMachine = StateMachine()
     stateMachine.init()

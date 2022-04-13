@@ -15,6 +15,7 @@ repositories {
 dependencies {
     testImplementation(kotlin("test"))
     api("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.6.10")
+    api("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.2")
 }
 
 tasks.test {
