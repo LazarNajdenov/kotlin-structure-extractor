@@ -17,6 +17,24 @@ data class Name(val value: String)
  * A language entity that has a name.
  */
 abstract class NamedEntity(var name: Name? = null) {
+
+    class Nested {
+        val variable: Int = 0
+        fun foo() {
+
+        }
+    }
+
+    inner class NestedInner: MyInterface {
+        val variableInner: Int = 0
+        fun fooInner(aValue: Int) {
+
+        }
+    }
+
+    companion object {
+        val aCompanionVariable: String? = null
+    }
     fun name(nameString: String) {
         this.name = Name(nameString)
     }

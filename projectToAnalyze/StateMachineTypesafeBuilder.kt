@@ -3,6 +3,7 @@ package ch.usi.si.msde.edsl.assignment_05_template.dsl
 import ch.usi.si.msde.edsl.assignment_05_template.model.StateMachine
 
 object ObjectExample {
+    val count: Int = 0
     fun hello(): String {
         return "hello"
     }
