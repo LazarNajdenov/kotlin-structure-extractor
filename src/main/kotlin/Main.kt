@@ -5,7 +5,10 @@ import org.jetbrains.kotlin.com.intellij.openapi.util.Disposer
 import org.jetbrains.kotlin.com.intellij.psi.PsiFileFactory
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.idea.KotlinFileType
-import org.jetbrains.kotlin.psi.*
+import org.jetbrains.kotlin.psi.KtClassOrObject
+import org.jetbrains.kotlin.psi.KtFile
+import org.jetbrains.kotlin.psi.KtNamedFunction
+import org.jetbrains.kotlin.psi.KtPackageDirective
 import java.io.File
 import java.nio.charset.Charset
 import java.nio.file.Files
@@ -20,139 +23,33 @@ private val project by lazy {
 }
 
 fun main(args: Array<String>) {
-    val pathToProject: String = System.getProperty("user.dir") + "/projectToAnalyze/"
     val encoding: Charset = Charset.defaultCharset()
-    val entities: MutableList<Entity> = mutableListOf()
+    val pathToProject: String = System.getProperty("user.dir") + "/projectToAnalyze/"
+    val pathToOutput: String = System.getProperty("user.dir") + "/output/entities.json"
+    val jsonFile = File(pathToOutput)
+    jsonFile.createNewFile()
+    val entityManager = EntityManager(mutableListOf())
 
     File(pathToProject).walk().forEach { file ->
-        if (file.name.endsWith(".kt")) {
-            val encoded: ByteArray = Files.readAllBytes(Paths.get(file.path))
-            val codeString = String(encoded, encoding)
-            val ktFile: KtFile = PsiFileFactory
-                .getInstance(project)
-                .createFileFromText(file.path, KotlinFileType.INSTANCE, codeString) as KtFile
+        if (file.isFile && file.name.endsWith(".kt")) {
+            val ktFile: KtFile = generateKtFile(file, encoding)
             val packageName: String = ktFile.packageFqName.asString()
             ktFile.children.forEach { psiElement ->
                 when (psiElement) {
-                    is KtClass -> {
-                        addClassEntity(psiElement, entities, packageName)
-                    }
-                    is KtNamedFunction -> {
-                        addMethodEntity(psiElement, entities, packageName)
-                    }
-                    is KtPackageDirective -> {
-                        addPackageEntity(psiElement, entities, packageName)
-                    }
+                    is KtClassOrObject -> { entityManager.addClassOrObjectEntity(psiElement, packageName) }
+                    is KtNamedFunction -> { entityManager.addMethodEntity(psiElement, packageName) }
+                    is KtPackageDirective -> { entityManager.addPackageEntity(psiElement,packageName) }
                 }
             }
         }
     }
-    val mapper = jacksonObjectMapper()
-    val jsonArray = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(entities)
-    println(jsonArray)
+    jacksonObjectMapper().writerWithDefaultPrettyPrinter().writeValue(jsonFile, entityManager.entities)
 }
 
-fun addClassEntity( psiElement: KtClass, entities: MutableList<Entity>, packageName: String) {
-    val entityName: String? = psiElement.name
-    val fullyQualifiedName: String? = psiElement.fqName?.asString()
-    val extendedImplementedClasses: List<KtSuperTypeListEntry> = psiElement.superTypeListEntries
-    val primaryAttributes: List<KtParameter> = psiElement.primaryConstructorParameters
-    val attributes: List<KtProperty> = psiElement.getProperties()
-    val totalNumberOfAttributes: Int = primaryAttributes.size + attributes.size
-    val methods: List<KtNamedFunction> = psiElement.declarations.filterIsInstance<KtNamedFunction>()
-    val numberOfMethods: Int = methods.size
-    val (extendedClass, implementedClasses) = retrieveExtendedAndImplementedClasses(extendedImplementedClasses)
-    entities.add(
-        Entity()
-            .entityName(entityName)
-            .fullyQualifiedName(fullyQualifiedName)
-            .container(packageName)
-            .type("CLASS")
-            .extends(extendedClass)
-            .implements(implementedClasses)
-            .numberOfMethods(numberOfMethods)
-            .numberOfAttributes(totalNumberOfAttributes)
-    )
-    addAttributesEntities(primaryAttributes, attributes, entities, fullyQualifiedName)
-    addMethodsEntities(methods, entities, fullyQualifiedName)
-
-}
-
-fun addAttributesEntities(primaryAttributes: List<KtParameter>,
-                          attributes: List<KtProperty>,
-                          entities: MutableList<Entity>,
-                          fullyQualifiedName: String?) {
-    primaryAttributes.forEach { attribute ->  addAttributeEntity(attribute.name, entities, fullyQualifiedName) }
-    attributes.forEach { attribute ->  addAttributeEntity(attribute.name, entities, fullyQualifiedName)}
-}
-
-fun addAttributeEntity(attributeName: String?, entities: MutableList<Entity>, fullyQualifiedName: String?) {
-    val attributeFullyQualifiedName = "$fullyQualifiedName.$attributeName"
-    entities.add(
-        Entity()
-            .entityName(attributeName)
-            .fullyQualifiedName(attributeFullyQualifiedName)
-            .container(fullyQualifiedName)
-            .type("ATTRIBUTE")
-    )
-}
-
-fun addMethodsEntities(methods: List<KtNamedFunction>,
-                       entities: MutableList<Entity>,
-                       fullyQualifiedName: String?) {
-    methods.forEach { method -> addMethodEntity(method, entities, fullyQualifiedName) }
-}
-
-fun addMethodEntity(
-    method: KtNamedFunction,
-    entities: MutableList<Entity>,
-    fullyQualifiedName: String?
-) {
-    val methodName: String? = method.name
-    val methodFullyQualifiedName: String? = method.fqName?.asString()
-    val numberOfParameters: Int = method.valueParameters.size
-    entities.add(
-        Entity()
-            .entityName(methodName)
-            .fullyQualifiedName(methodFullyQualifiedName)
-            .container(fullyQualifiedName)
-            .type("METHOD")
-            .numberOfParameters(numberOfParameters)
-    )
-}
-
-
-fun retrieveExtendedAndImplementedClasses(
-    extendedImplementedClasses: List<KtSuperTypeListEntry>,
-): Pair<String?, MutableList<String>> {
-    var extendedClass: String? = null
-    val implementedClasses: MutableList<String> = mutableListOf()
-    extendedImplementedClasses.forEach { parent ->
-        when (parent) {
-            is KtSuperTypeCallEntry -> {
-                extendedClass = parent.typeReference?.text.toString()
-            }
-            is KtSuperTypeEntry -> {
-                implementedClasses.add(parent.typeReference?.text.toString())
-            }
-        }
-    }
-    return Pair(extendedClass, implementedClasses)
-}
-
-fun addPackageEntity(
-    psiElement: KtPackageDirective,
-    entities: MutableList<Entity>,
-    packageName: String
-) {
-    val entityName: String = psiElement.name
-    if (entityName.isNotEmpty()) {
-        entities.add(
-            Entity()
-                .entityName(entityName)
-                .fullyQualifiedName(packageName)
-                .container(packageName)
-                .type("PACKAGE")
-        )
-    }
+private fun generateKtFile(file: File, encoding: Charset): KtFile {
+    val encoded: ByteArray = Files.readAllBytes(Paths.get(file.path))
+    val codeString = String(encoded, encoding)
+    return PsiFileFactory
+            .getInstance(project)
+            .createFileFromText(file.path, KotlinFileType.INSTANCE, codeString) as KtFile
 }
