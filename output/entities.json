@@ -9,6 +9,36 @@
   "numberOfAttributes" : null,
   "numberOfParameters" : null
 }, {
+  "entityName" : "MyInterface",
+  "fullyQualifiedName" : "ch.usi.si.msde.edsl.assignment_05_template.model.MyInterface",
+  "container" : "ch.usi.si.msde.edsl.assignment_05_template.model",
+  "type" : "CLASS",
+  "extends" : null,
+  "implements" : [ ],
+  "numberOfMethods" : 2,
+  "numberOfAttributes" : 0,
+  "numberOfParameters" : null
+}, {
+  "entityName" : "bar",
+  "fullyQualifiedName" : "ch.usi.si.msde.edsl.assignment_05_template.model.MyInterface.bar",
+  "container" : "ch.usi.si.msde.edsl.assignment_05_template.model.MyInterface",
+  "type" : "METHOD",
+  "extends" : null,
+  "implements" : null,
+  "numberOfMethods" : null,
+  "numberOfAttributes" : null,
+  "numberOfParameters" : 0
+}, {
+  "entityName" : "foo",
+  "fullyQualifiedName" : "ch.usi.si.msde.edsl.assignment_05_template.model.MyInterface.foo",
+  "container" : "ch.usi.si.msde.edsl.assignment_05_template.model.MyInterface",
+  "type" : "METHOD",
+  "extends" : null,
+  "implements" : null,
+  "numberOfMethods" : null,
+  "numberOfAttributes" : null,
+  "numberOfParameters" : 0
+}, {
   "entityName" : "Name",
   "fullyQualifiedName" : "ch.usi.si.msde.edsl.assignment_05_template.model.Name",
   "container" : "ch.usi.si.msde.edsl.assignment_05_template.model",
@@ -39,6 +69,26 @@
   "numberOfAttributes" : 1,
   "numberOfParameters" : null
 }, {
+  "entityName" : "Companion",
+  "fullyQualifiedName" : "ch.usi.si.msde.edsl.assignment_05_template.model.NamedEntity.Companion",
+  "container" : "ch.usi.si.msde.edsl.assignment_05_template.model.NamedEntity",
+  "type" : "OBJECT",
+  "extends" : null,
+  "implements" : [ ],
+  "numberOfMethods" : 0,
+  "numberOfAttributes" : 1,
+  "numberOfParameters" : null
+}, {
+  "entityName" : "aCompanionVariable",
+  "fullyQualifiedName" : "ch.usi.si.msde.edsl.assignment_05_template.model.NamedEntity.Companion.aCompanionVariable",
+  "container" : "ch.usi.si.msde.edsl.assignment_05_template.model.NamedEntity.Companion",
+  "type" : "ATTRIBUTE",
+  "extends" : null,
+  "implements" : null,
+  "numberOfMethods" : null,
+  "numberOfAttributes" : null,
+  "numberOfParameters" : null
+}, {
   "entityName" : "name",
   "fullyQualifiedName" : "ch.usi.si.msde.edsl.assignment_05_template.model.NamedEntity.name",
   "container" : "ch.usi.si.msde.edsl.assignment_05_template.model.NamedEntity",
@@ -52,6 +102,66 @@
   "entityName" : "name",
   "fullyQualifiedName" : "ch.usi.si.msde.edsl.assignment_05_template.model.NamedEntity.name",
   "container" : "ch.usi.si.msde.edsl.assignment_05_template.model.NamedEntity",
+  "type" : "METHOD",
+  "extends" : null,
+  "implements" : null,
+  "numberOfMethods" : null,
+  "numberOfAttributes" : null,
+  "numberOfParameters" : 1
+}, {
+  "entityName" : "Nested",
+  "fullyQualifiedName" : "ch.usi.si.msde.edsl.assignment_05_template.model.NamedEntity.Nested",
+  "container" : "ch.usi.si.msde.edsl.assignment_05_template.model.NamedEntity",
+  "type" : "CLASS",
+  "extends" : null,
+  "implements" : [ ],
+  "numberOfMethods" : 1,
+  "numberOfAttributes" : 1,
+  "numberOfParameters" : null
+}, {
+  "entityName" : "variable",
+  "fullyQualifiedName" : "ch.usi.si.msde.edsl.assignment_05_template.model.NamedEntity.Nested.variable",
+  "container" : "ch.usi.si.msde.edsl.assignment_05_template.model.NamedEntity.Nested",
+  "type" : "ATTRIBUTE",
+  "extends" : null,
+  "implements" : null,
+  "numberOfMethods" : null,
+  "numberOfAttributes" : null,
+  "numberOfParameters" : null
+}, {
+  "entityName" : "foo",
+  "fullyQualifiedName" : "ch.usi.si.msde.edsl.assignment_05_template.model.NamedEntity.Nested.foo",
+  "container" : "ch.usi.si.msde.edsl.assignment_05_template.model.NamedEntity.Nested",
+  "type" : "METHOD",
+  "extends" : null,
+  "implements" : null,
+  "numberOfMethods" : null,
+  "numberOfAttributes" : null,
+  "numberOfParameters" : 0
+}, {
+  "entityName" : "NestedInner",
+  "fullyQualifiedName" : "ch.usi.si.msde.edsl.assignment_05_template.model.NamedEntity.NestedInner",
+  "container" : "ch.usi.si.msde.edsl.assignment_05_template.model.NamedEntity",
+  "type" : "CLASS",
+  "extends" : null,
+  "implements" : [ "MyInterface" ],
+  "numberOfMethods" : 1,
+  "numberOfAttributes" : 1,
+  "numberOfParameters" : null
+}, {
+  "entityName" : "variableInner",
+  "fullyQualifiedName" : "ch.usi.si.msde.edsl.assignment_05_template.model.NamedEntity.NestedInner.variableInner",
+  "container" : "ch.usi.si.msde.edsl.assignment_05_template.model.NamedEntity.NestedInner",
+  "type" : "ATTRIBUTE",
+  "extends" : null,
+  "implements" : null,
+  "numberOfMethods" : null,
+  "numberOfAttributes" : null,
+  "numberOfParameters" : null
+}, {
+  "entityName" : "fooInner",
+  "fullyQualifiedName" : "ch.usi.si.msde.edsl.assignment_05_template.model.NamedEntity.NestedInner.fooInner",
+  "container" : "ch.usi.si.msde.edsl.assignment_05_template.model.NamedEntity.NestedInner",
   "type" : "METHOD",
   "extends" : null,
   "implements" : null,
@@ -84,7 +194,7 @@
   "container" : "ch.usi.si.msde.edsl.assignment_05_template.model",
   "type" : "CLASS",
   "extends" : "AbstractEvent",
-  "implements" : [ ],
+  "implements" : [ "MyInterface" ],
   "numberOfMethods" : 1,
   "numberOfAttributes" : 1,
   "numberOfParameters" : null
@@ -558,6 +668,46 @@
   "numberOfMethods" : null,
   "numberOfAttributes" : null,
   "numberOfParameters" : null
+}, {
+  "entityName" : "ObjectExample",
+  "fullyQualifiedName" : "ch.usi.si.msde.edsl.assignment_05_template.dsl.ObjectExample",
+  "container" : "ch.usi.si.msde.edsl.assignment_05_template.dsl",
+  "type" : "OBJECT",
+  "extends" : null,
+  "implements" : [ ],
+  "numberOfMethods" : 2,
+  "numberOfAttributes" : 1,
+  "numberOfParameters" : null
+}, {
+  "entityName" : "count",
+  "fullyQualifiedName" : "ch.usi.si.msde.edsl.assignment_05_template.dsl.ObjectExample.count",
+  "container" : "ch.usi.si.msde.edsl.assignment_05_template.dsl.ObjectExample",
+  "type" : "ATTRIBUTE",
+  "extends" : null,
+  "implements" : null,
+  "numberOfMethods" : null,
+  "numberOfAttributes" : null,
+  "numberOfParameters" : null
+}, {
+  "entityName" : "hello",
+  "fullyQualifiedName" : "ch.usi.si.msde.edsl.assignment_05_template.dsl.ObjectExample.hello",
+  "container" : "ch.usi.si.msde.edsl.assignment_05_template.dsl.ObjectExample",
+  "type" : "METHOD",
+  "extends" : null,
+  "implements" : null,
+  "numberOfMethods" : null,
+  "numberOfAttributes" : null,
+  "numberOfParameters" : 0
+}, {
+  "entityName" : "toString",
+  "fullyQualifiedName" : "ch.usi.si.msde.edsl.assignment_05_template.dsl.ObjectExample.toString",
+  "container" : "ch.usi.si.msde.edsl.assignment_05_template.dsl.ObjectExample",
+  "type" : "METHOD",
+  "extends" : null,
+  "implements" : null,
+  "numberOfMethods" : null,
+  "numberOfAttributes" : null,
+  "numberOfParameters" : 0
 }, {
   "entityName" : "stateMachine",
   "fullyQualifiedName" : "ch.usi.si.msde.edsl.assignment_05_template.dsl.stateMachine",

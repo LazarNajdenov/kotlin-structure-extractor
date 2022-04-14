@@ -1,3 +1,3 @@
 
-rootProject.name = "KotlinProjectParser"
+rootProject.name = "kotlin-structure-extractor"
 
