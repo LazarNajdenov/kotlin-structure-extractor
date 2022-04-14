@@ -24,7 +24,7 @@ private val project by lazy {
 
 fun main(args: Array<String>) {
     val encoding: Charset = Charset.defaultCharset()
-    val pathToProject: String = System.getProperty("user.dir") + "/projectToAnalyze/"
+    val pathToProject: String = if (args.size == 1) args[0] else System.getProperty("user.dir") + "/projectToAnalyze/"
     val pathToOutput: String = System.getProperty("user.dir") + "/output/entities.json"
     val jsonFile = File(pathToOutput)
     jsonFile.createNewFile()
