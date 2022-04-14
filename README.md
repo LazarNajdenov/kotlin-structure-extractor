@@ -1,6 +1,6 @@
-# KotlinProjectParser
+# kotlin-structure-extractor
 
-The main use of the `KotlinProjectParser` is to statically analyze, through the 
+The main use of the `kotlin-structure-extractor` is to statically analyze, through the 
 [Kotlin Embedded Compiler](https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-compiler-embeddable),
 the Program Structure Interface(`PSI`) in a Kotlin Repository/Project, from which some metrics can be extracted for 
 a secondary purpose.
