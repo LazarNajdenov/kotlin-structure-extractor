@@ -27,4 +27,12 @@ where each `JSON` object can be either a `CLASS`, `METHOD`, `PACKAGE`, `ATTRIBUT
 
 ## Building and Running Instructions
 
-### TODO
+### Requirements
+  - `Gradle 7.4.2`
+  - `Java 11`
+### Commands
+In order to build and run the tool successfully, you must run from the root of the tool directory:
+```
+./gradlew run --args="absolute/path/to/repo/to/analyze"
+```
+which, if successfull will generate an `entities.json` file inside the `output` folder of the tool.
