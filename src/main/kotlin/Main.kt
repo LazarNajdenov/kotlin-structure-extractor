@@ -7,7 +7,6 @@ import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.idea.KotlinFileType
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.psi.KtPackageDirective
 import java.io.File
 import java.nio.charset.Charset
@@ -23,6 +22,7 @@ private val project by lazy {
 }
 
 fun main(args: Array<String>) {
+    val start = System.nanoTime()
     val encoding: Charset = Charset.defaultCharset()
     val pathToProject: String = if (args.size == 1) args[0] else System.getProperty("user.dir") + "/projectToAnalyze/"
     val pathToOutput: String = System.getProperty("user.dir") + "/output/entities.json"
@@ -33,17 +33,32 @@ fun main(args: Array<String>) {
     File(pathToProject).walk().forEach { file ->
         if (file.isFile && file.name.endsWith(".kt")) {
             val ktFile: KtFile = generateKtFile(file, encoding)
-            val packageName: String = ktFile.packageFqName.asString()
+            val ktPackageName: String = ktFile.packageFqName.asString()
+            val packageName: String = "root" + if (ktPackageName.isNotEmpty()) {
+                ".$ktPackageName"
+            } else {
+                ""
+            }
+            if (ktFile.hasTopLevelCallables()) entityManager.addPackageObjectEntity(packageName, ktFile)
             ktFile.children.forEach { psiElement ->
                 when (psiElement) {
-                    is KtClassOrObject -> { entityManager.addClassOrObjectEntity(psiElement, packageName) }
-                    is KtNamedFunction -> { entityManager.addMethodEntity(psiElement, packageName) }
-                    is KtPackageDirective -> { entityManager.addPackageEntity(psiElement,packageName) }
+                    is KtPackageDirective -> {
+                        entityManager.addPackageEntity(psiElement, packageName)
+                    }
+                    is KtClassOrObject -> {
+                        entityManager.addClassOrObjectEntity(psiElement, packageName)
+                    }
                 }
             }
         }
     }
-    jacksonObjectMapper().writerWithDefaultPrettyPrinter().writeValue(jsonFile, entityManager.entities)
+    val uniqueEntities: List<Entity> = entityManager.removeDuplicatesByFullyQualifiedNameAndType()
+    val sortedEntities: List<Entity> = entityManager.sortEntitiesByFullyQualifiedName(uniqueEntities)
+    val entitiesToMap: Map<String?, Entity?> = sortedEntities.associateBy { it.fullyQualifiedName }
+    jacksonObjectMapper()
+        .writerWithDefaultPrettyPrinter()
+        .writeValue(jsonFile, entitiesToMap)
+    println(System.nanoTime() - start)
 }
 
 private fun generateKtFile(file: File, encoding: Charset): KtFile {

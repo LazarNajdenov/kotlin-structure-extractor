@@ -3,6 +3,7 @@ data class Entity(
     var fullyQualifiedName: String? = null,
     var container: String? = null,
     var type: String? = null,
+    var isNested: Boolean? = null,
     var extends: String? = null,
     var implements: MutableList<String>? = null,
     var numberOfMethods: Int? = null,
@@ -13,6 +14,7 @@ data class Entity(
     fun fullyQualifiedName(fullyQualifiedName: String?) = apply { this.fullyQualifiedName = fullyQualifiedName }
     fun container(container: String?) = apply { this.container = container }
     fun type(type: String?) = apply { this.type = type }
+    fun isNested(isNested: Boolean?) = apply {this.isNested = isNested}
     fun extends(extends: String?) = apply { this.extends = extends }
     fun implements(implements: MutableList<String>?) = apply { this.implements = implements }
     fun numberOfMethods(numberOfMethods: Int?) = apply { this.numberOfMethods = numberOfMethods }
